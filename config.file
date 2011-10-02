@@ -1,4 +1,11 @@
-% Example config file
+// /hide [query | chan | server | @query | @chan | @server | alias | @alias] <value>
+// /show [query | chan | server | @query | @chan | @server | alias | @alias] value [all | unread] (nb_of_line)
+// /alias new <alias_name> <color>
+// /alias add <alias_name> [query | chan | server | @query | @chan | @alias ] <value> (file)
+// /alias del [query | chan | server | @query | @chan | @alias ] <value> <alias_name>
+// /alias set <alias_name> color <color>
+// /alias set <alias_name> visibility [ visible | hidden ]
+// /alias set <alias_name> file <file> <mode>
 
 nick=clIRC
 server=irc.epita.fr
