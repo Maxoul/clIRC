@@ -8,6 +8,12 @@ public class Criteria
 		this.value = value;
 	}
 	
+	public Criteria(eCriteriaType type)
+	{
+		assert (type == eCriteriaType.all_chan || type == eCriteriaType.all_server || type == eCriteriaType.all_query);
+		this.type = type;
+	}
+	
 	enum eCriteriaType
 	{
 		none,

@@ -32,11 +32,12 @@ public class MainIRC
 	{
 		this.host = host;
 		this.port = port;
+		this.line = null;
+		this.aliasList = new Vector<Alias>();
 
 		socket = new Socket(host, port);
 		writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		line = null;
 	}
 
 	void login() throws IOException
@@ -85,8 +86,33 @@ public class MainIRC
 			else
 			{
 				assignMsg(createMsg(line));
+				showMsg();
 			}
 		}
+	}
+	
+	void showMsg()
+	{
+		for (Alias alias: aliasList)
+			if (!alias.isHide())
+			{
+				for (Message msg: alias.getMsgList())
+					if (!msg.isRead())
+					{
+						String out = "[" + alias.getName() + "]";
+						
+						if (msg.getType() == eCriteriaType.chan)
+							out += "[#" + msg.getTo() + "] <" + msg.getFrom() + ">";
+						if (msg.getType() == eCriteriaType.query)
+							out += "[QUERY] <" + msg.getFrom() + ">";
+						if (msg.getType() == eCriteriaType.server)
+							out += "[" + msg.getAction() + "]";
+						
+						out += " " + msg.getContent();
+						System.out.println(out);
+						msg.setRead();
+					}
+			}
 	}
 	
 	void assignMsg(Message msg)
@@ -94,7 +120,9 @@ public class MainIRC
 		for (Alias alias: aliasList)
 			for (Criteria criteria: alias.getCriteriaList())
 			{
-				if ((msg.getType() == criteria.getType()) ||
+				if ((msg.getType() == eCriteriaType.chan) && (msg.getType() == criteria.getType()) && (msg.getTo().equals(criteria.getValue())) ||
+						(msg.getType() == eCriteriaType.query) && (msg.getType() == criteria.getType()) && (msg.getFrom().equals(criteria.getValue())) ||
+						(msg.getType() == eCriteriaType.server) && (msg.getType() == criteria.getType()) ||
 						((msg.getType() == eCriteriaType.chan) && criteria.getType() == eCriteriaType.all_chan) ||
 						((msg.getType() == eCriteriaType.server) && criteria.getType() == eCriteriaType.all_server) ||
 						((msg.getType() == eCriteriaType.query) && criteria.getType() == eCriteriaType.all_query))
@@ -170,6 +198,11 @@ public class MainIRC
 		this.nickname = nickname;
 	}
 
+	public Vector<Alias> getAliasList()
+	{
+		return this.aliasList;
+	}
+	
 	private String line;
 	private int port;
 	private BufferedWriter writer;
@@ -178,4 +211,5 @@ public class MainIRC
 	private String host;
 	private String nickname;
 	private Vector<Alias> aliasList;
+	
 }

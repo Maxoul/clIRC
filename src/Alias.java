@@ -8,6 +8,9 @@ public class Alias
 	{
 		this.color = color;
 		this.name = name;
+		this.isHide = false;
+		this.criteriaList = new Vector<Criteria>();
+		this.messageList = new Vector<Message>();
 	}
 	
 	public void addMessage(Message msg)
@@ -35,8 +38,29 @@ public class Alias
 		return this.criteriaList;
 	}
 	
+	public Vector<Message> getMsgList()
+	{
+		return this.messageList;
+	}
+	
+	public boolean isHide()
+	{
+		return this.isHide;
+	}
+	
+	public void hide()
+	{
+		this.isHide = true;
+	}
+	
+	public void show()
+	{
+		this.isHide = false;
+	}
+	
 	private Vector<Criteria> criteriaList;
 	private Vector<Message> messageList;
 	private String name;
 	private String color;
+	private boolean isHide;
 }

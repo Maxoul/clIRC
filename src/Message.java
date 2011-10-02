@@ -43,6 +43,11 @@ public class Message
 	{
 		return content;
 	}
+
+	public String getAction() 
+	{
+		return action;
+	}
 	private eCriteriaType type;
 	private String from;
 	private String to;
